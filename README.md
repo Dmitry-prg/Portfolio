@@ -1,3 +1,3 @@
 # Portfolio
-Моё портфолио
+Личное портфолио с проектами
 ### [Посмотреть](https://dmitry-prg.github.io/Portfolio/)
