@@ -2,8 +2,8 @@
   "profile": {
     "name": "Дмитрий Давыдов",
     "position": "WEB-Разработчик",
-    "avatar": "a.jpeg",
-    "about": "Разрабатываю веб-приложения более 2 лет. Специализируюсь на JavaScript. Люблю чистый код и продуманный UX.",
+    "avatar": "./a.jpeg",
+    "about": "Разрабатываю веб-приложения более 2 лет. Специализируюсь на C# и JavaScript. Люблю чистый код и продуманный UX.",
     "contacts": [
       { "type": "email", "label": "davydo44@yandex.ru", "url": "mailto:davydo44@yandex.ru" },
       { "type": "telegram", "label": "@dimon_dav", "url": "https://t.me/dimon_dav" },
@@ -62,14 +62,14 @@
         {
           "title": "ISPDA ",
           "description": "Информационная система учёта выполнения проектных работ в отделе разработки ГОБУ 'ЦИТ МО'",
-          "image": "https://picsum.photos/seed/json/600/400",
+          "image": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20x='25'%20y='10'%20width='60'%20height='80'%20rx='4'%20fill='none'%20stroke='black'%20stroke-width='6'/%3E%3Cpath%20d='M%2070%2010%20L%2070%2025%20L%2085%2025'%20fill='none'%20stroke='black'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Cline%20x1='40'%20y1='25'%20x2='60'%20y2='25'%20stroke='black'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Cline%20x1='40'%20y1='35'%20x2='75'%20y2='35'%20stroke='black'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Cline%20x1='40'%20y1='45'%20x2='60'%20y2='45'%20stroke='black'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Cline%20x1='40'%20y1='55'%20x2='75'%20y2='55'%20stroke='black'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Cline%20x1='60'%20y1='65'%20x2='75'%20y2='65'%20stroke='black'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Ccircle%20cx='35'%20cy='75'%20r='12'%20fill='none'%20stroke='black'%20stroke-width='3'/%3E%3Cpolygon%20points='35,66%2038,73%2045,73%2039,77%2041,84%2035,79%2029,84%2031,77%2025,73%2032,73'%20fill='none'%20stroke='black'%20stroke-width='2'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='35'%20cy='75'%20r='3'%20fill='%23ff6600'/%3E%3Cpath%20d='M%2028%2084%20L%2025%2092%20L%2035%2088%20L%2045%2092%20L%2042%2084'%20fill='none'%20stroke='black'%20stroke-width='3'%20stroke-linejoin='round'/%3E%3C/svg%3E",
           "tags": ["C#", ".NET", "MySQL"],
           "link": "https://github.com/Dmitry-prg/ISPDA"
         },
         {
           "title": "PP-01",
           "description": "Информационная система учёта заявок на приобретение оборудования в ГОБУ 'ЦИТ МО'",
-          "image": "https://picsum.photos/seed/cli/600/400",
+          "image": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='0'%3E%3Cstop%20offset='0%25'%20stop-color='%2300e5ff'/%3E%3Cstop%20offset='100%25'%20stop-color='%2300b8cc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='100'%20height='100'%20fill='%230e8a9e'/%3E%3Crect%20x='50'%20width='50'%20height='100'%20fill='%23085764'/%3E%3Crect%20x='10'%20y='10'%20width='40'%20height='25'%20rx='4'%20fill='url(%23g)'/%3E%3Crect%20x='30'%20y='35'%20width='10'%20height='8'%20fill='%23085764'/%3E%3Crect%20x='18'%20y='43'%20width='24'%20height='6'%20rx='3'%20fill='%23085764'/%3E%3Crect%20x='60'%20y='8'%20width='30'%20height='45'%20rx='8'%20fill='%230e8a9e'/%3E%3Crect%20x='60'%20y='18'%20width='30'%20height='8'%20fill='%23053b42'/%3E%3Ccircle%20cx='75'%20cy='35'%20r='3'%20fill='%23ff66cc'/%3E%3Crect%20x='8'%20y='60'%20width='42'%20height='32'%20rx='6'%20fill='%230e8a9e'/%3E%3Ccircle%20cx='16'%20cy='70'%20r='3'%20fill='%23ff99cc'/%3E%3Ccircle%20cx='26'%20cy='70'%20r='3'%20fill='%23ff99cc'/%3E%3Ccircle%20cx='36'%20cy='70'%20r='3'%20fill='%23ff99cc'/%3E%3Ccircle%20cx='46'%20cy='70'%20r='3'%20fill='%23ff99cc'/%3E%3Crect%20x='14'%20y='80'%20width='24'%20height='6'%20rx='3'%20fill='%23053b42'/%3E%3Crect%20x='65'%20y='60'%20width='25'%20height='32'%20rx='12'%20fill='%230e8a9e'/%3E%3Cline%20x1='77.5'%20y1='60'%20x2='77.5'%20y2='92'%20stroke='%23053b42'%20stroke-width='2'/%3E%3Cline%20x1='72'%20y1='68'%20x2='72'%20y2='78'%20stroke='%2300e5ff'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Crect%20x='80'%20y='65'%20width='8'%20height='15'%20rx='4'%20fill='%23ff66cc'/%3E%3C/svg%3E",
           "tags": ["C#", ".NET", "MySQL"],
           "link": "https://github.com/Dmitry-prg/PP-01"
         }
