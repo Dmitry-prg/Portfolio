@@ -1,9 +1,9 @@
-const CACHE = 'portfolio-v2.0';
+const CACHE = 'portfolio-v2.2';
 const ASSETS = [
   './',
   './index.html',
   './data.json',
-  './manifest.json',
+  './manifest.webmanifest',
   './a.jpeg'
 ];
 
