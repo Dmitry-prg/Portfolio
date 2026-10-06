@@ -7,7 +7,7 @@
     "contacts": [
       { "type": "email", "label": "davydo44@yandex.ru", "url": "mailto:davydo44@yandex.ru" },
       { "type": "telegram", "label": "@dimon_dav", "url": "https://t.me/dimon_dav" },
-      { "type": "github", "label": "github.com/Dmitry-prg", "url": "https://github.com/Dmitry-prg" },
+      { "type": "github", "label": "github.com/Dmitry-prg", "url": "https://github.com/Dmitry-prg" }
     ],
     "skills": ["C#", ".NET", "MySQL", "JavaScript", "Git"]
   },
