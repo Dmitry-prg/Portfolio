@@ -1,0 +1,80 @@
+{
+  "profile": {
+    "name": "Дмитрий Давыдов",
+    "position": "WEB-Разработчик",
+    "avatar": "https://i.pravatar.cc/300?img=12",
+    "about": "Разрабатываю веб-приложения более 2 лет. Специализируюсь на JavaScript. Люблю чистый код и продуманный UX.",
+    "contacts": [
+      { "type": "email", "label": "davydo44@yandex.ru", "url": "mailto:davydo44@yandex.ru" },
+      { "type": "telegram", "label": "@dimon_dav", "url": "https://t.me/dimon_dav" },
+      { "type": "github", "label": "github.com/Dmitry-prg", "url": "https://github.com/Dmitry-prg" },
+    ],
+    "skills": ["C#", ".NET", "MySQL", "JavaScript", "Git"]
+  },
+  "projects": [
+    {
+      "block": "Веб-игры(с возможностью установки как PWA)",
+      "items": [
+        {
+          "title": "Memory_Game",
+          "description": "Весёлая браузерная игра на запоминание, где игрок открывает карточки и ищет пары. Подходит для детей и взрослых, чтобы тренировать память в игровой форме",
+          "image": "https://picsum.photos/seed/task/600/400",
+          "tags": ["JavaScript", "HTML"],
+          "link": "https://dmitry-prg.github.io/Memory_Game/"
+        },
+        {
+          "title": "Minesweeper_Game",
+          "description": "Старая добрая игра 'Сапёр'",
+          "image": "https://picsum.photos/seed/shop/600/400",
+          "tags": ["HTML", "JavaScript"],
+          "link": "https://dmitry-prg.github.io/Minesweeper_Game/"
+        },
+		{
+          "title": "WordleGame",
+          "description": "Игра, в которой нужно угадать слово за ограниченное количество ходов",
+          "image": "https://picsum.photos/seed/shop/600/400",
+          "tags": ["HTML", "JavaScript"],
+          "link": "https://dmitry-prg.github.io/Minesweeper_Game/"
+        }
+      ]
+    },
+    {
+      "block": "Веб-инструменты(с возможностью установки как PWA)",
+      "items": [
+        {
+          "title": "FORMATme",
+          "description": "Собирайте фотографии в один PDF-файл или превращайте страницы PDF в изображения",
+          "image": "https://picsum.photos/seed/fit/600/400",
+          "tags": ["JavaScript"],
+          "link": "https://dmitry-prg.github.io/FORMATme/"
+        },
+		{
+          "title": "FormatMaster",
+          "description": "Универсальный конвертер Фото · PDF · Документы · EPUB · Excel · OCR — все работает в браузере. Файлы не покидают ваше устройство",
+          "image": "https://picsum.photos/seed/fit/600/400",
+          "tags": ["HTML", "JavaScript"],
+          "link": "https://dmitry-prg.github.io/FormatMaster/"
+        }
+      ]
+    },
+    {
+      "block": "Windows‑приложения: учебные и практические проекты",
+      "items": [
+        {
+          "title": "ISPDA ",
+          "description": "Информационная система учёта выполнения проектных работ в отделе разработки ГОБУ 'ЦИТ МО'",
+          "image": "https://picsum.photos/seed/json/600/400",
+          "tags": ["C#", ".NET", "MySQL"],
+          "link": "https://github.com/Dmitry-prg/ISPDA"
+        },
+        {
+          "title": "PP-01",
+          "description": "Информационная система учёта заявок на приобретение оборудования в ГОБУ 'ЦИТ МО'",
+          "image": "https://picsum.photos/seed/cli/600/400",
+          "tags": ["C#", ".NET", "MySQL"],
+          "link": "https://github.com/Dmitry-prg/PP-01"
+        }
+      ]
+    }
+  ]
+}
