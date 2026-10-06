@@ -5,87 +5,211 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Портфолио</title>
   <style>
+    :root {
+      --bg: #0f1220;
+      --bg-soft: #161a2e;
+      --card: #1a1f38;
+      --card-hover: #212747;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8ecff;
+      --text-dim: #9aa3c7;
+      --accent: #7c8cff;
+      --accent-2: #b06cff;
+      --accent-3: #4ad8d8;
+      --radius: 20px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f4f6fb;
-      color: #1f2937;
-      line-height: 1.6;
-      padding: 32px 16px;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+      padding: 48px 20px 80px;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Мягкие цветные пятна на фоне */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background: radial-gradient(circle, var(--accent), transparent 70%);
+      top: -200px;
+      left: -200px;
+      animation: float1 18s ease-in-out infinite;
+    }
+
+    body::after {
+      background: radial-gradient(circle, var(--accent-2), transparent 70%);
+      bottom: -250px;
+      right: -200px;
+      animation: float2 22s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(80px, 60px); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(-70px, -50px); }
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     /* ---------- Профиль ---------- */
     .profile {
-      background: #fff;
-      border-radius: 16px;
-      padding: 32px;
+      background: linear-gradient(145deg, rgba(30, 36, 66, 0.9), rgba(22, 26, 46, 0.85));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 44px;
       display: flex;
-      gap: 28px;
+      gap: 40px;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+      margin-bottom: 56px;
+      position: relative;
+      overflow: hidden;
+      animation: riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+      opacity: 0.8;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile__avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
     }
 
     .profile__avatar {
-      width: 130px;
-      height: 130px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       object-fit: cover;
-      flex-shrink: 0;
-      border: 4px solid #eef2ff;
-      background: #e5e7eb;
+      display: block;
+      position: relative;
+      z-index: 1;
+      border: 3px solid transparent;
+      background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3)) border-box;
     }
 
-    .profile__info { flex: 1; }
+    .profile__avatar-wrap::after {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      filter: blur(24px);
+      opacity: 0.5;
+      z-index: 0;
+      animation: pulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50%      { opacity: 0.65; transform: scale(1.06); }
+    }
+
+    .profile__info { flex: 1; min-width: 0; }
 
     .profile__name {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 0%, #b8c1ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
     }
 
     .profile__position {
-      color: #6366f1;
+      display: inline-block;
       font-weight: 600;
-      font-size: 16px;
-      margin-bottom: 12px;
+      font-size: 15px;
+      margin-bottom: 18px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(124, 140, 255, 0.18), rgba(176, 108, 255, 0.18));
+      border: 1px solid rgba(124, 140, 255, 0.3);
+      color: #c2cbff;
     }
 
     .profile__about {
-      color: #4b5563;
-      margin-bottom: 16px;
-      font-size: 15px;
+      color: var(--text-dim);
+      margin-bottom: 22px;
+      font-size: 15.5px;
+      max-width: 620px;
     }
 
     .profile__contacts {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 16px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
     .profile__contacts a {
-      color: #4b5563;
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13.5px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: color 0.2s;
     }
 
-    .profile__contacts a:hover { color: #6366f1; }
-
-    .profile__contacts a::before {
-      content: "•";
-      color: #6366f1;
-      font-weight: bold;
+    .profile__contacts a:hover {
+      color: var(--text);
+      background: rgba(124, 140, 255, 0.14);
+      border-color: rgba(124, 140, 255, 0.5);
+      transform: translateY(-2px);
     }
 
     .skills {
@@ -95,119 +219,193 @@
     }
 
     .skills span {
-      background: #eef2ff;
-      color: #4338ca;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 5px 13px;
+      border-radius: 8px;
+      color: #b9c2ff;
+      background: rgba(124, 140, 255, 0.1);
+      border: 1px solid rgba(124, 140, 255, 0.22);
+      transition: all 0.25s ease;
     }
 
-    /* ---------- Проекты ---------- */
-    .block { margin-bottom: 40px; }
+    .skills span:hover {
+      background: rgba(124, 140, 255, 0.22);
+      color: #e2e6ff;
+      transform: translateY(-2px);
+    }
+
+    /* ---------- Блоки проектов ---------- */
+    .block {
+      margin-bottom: 52px;
+      animation: riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .block:nth-of-type(2) { animation-delay: 0.08s; }
+    .block:nth-of-type(3) { animation-delay: 0.16s; }
+    .block:nth-of-type(4) { animation-delay: 0.24s; }
 
     .block__title {
-      font-size: 22px;
+      font-size: clamp(20px, 2.5vw, 24px);
       font-weight: 700;
-      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
+      color: #eef1ff;
     }
 
     .block__title::before {
       content: "";
-      width: 6px;
-      height: 24px;
-      background: #6366f1;
+      width: 4px;
+      height: 26px;
       border-radius: 4px;
-      display: inline-block;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(124, 140, 255, 0.6);
     }
 
     .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
 
     .card {
-      background: #fff;
-      border-radius: 14px;
+      background: linear-gradient(160deg, rgba(30, 36, 66, 0.9), rgba(22, 26, 46, 0.9));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgba(99, 102, 241, 0.15);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(124, 140, 255, 0.22);
+    }
+
+    .card:hover::after { opacity: 1; }
+
+    .card__image-wrap {
+      overflow: hidden;
+      height: 190px;
+      background: var(--bg-soft);
+      position: relative;
     }
 
     .card__image {
       width: 100%;
-      height: 170px;
+      height: 100%;
       object-fit: cover;
-      background: #e5e7eb;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover .card__image { transform: scale(1.08); }
+
+    .card__image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(15, 18, 32, 0.85));
+      pointer-events: none;
     }
 
     .card__body {
-      padding: 18px;
+      padding: 22px 22px 24px;
       display: flex;
       flex-direction: column;
       flex: 1;
+      position: relative;
+      z-index: 1;
     }
 
     .card__title {
-      font-size: 17px;
+      font-size: 17.5px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      color: #f0f2ff;
     }
 
     .card__description {
-      color: #6b7280;
+      color: var(--text-dim);
       font-size: 14px;
       flex: 1;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .card__tags {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .card__tags span {
-      background: #f3f4f6;
-      color: #374151;
-      font-size: 12px;
-      padding: 3px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
       border-radius: 6px;
+      background: rgba(176, 108, 255, 0.12);
+      color: #c9b6ff;
+      border: 1px solid rgba(176, 108, 255, 0.22);
     }
 
     .card__link {
-      color: #6366f1;
+      align-self: flex-start;
+      color: var(--accent);
       text-decoration: none;
       font-weight: 600;
       font-size: 14px;
-      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.25s ease, color 0.25s ease;
     }
 
-    .card__link:hover { color: #4338ca; }
+    .card__link:hover {
+      color: var(--accent-2);
+      gap: 12px;
+    }
 
-    /* ---------- Скелетон загрузки ---------- */
+    /* ---------- Скелетон ---------- */
     .skeleton {
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .skeleton__box {
-      background: linear-gradient(90deg, #eceff5 25%, #f6f8fc 50%, #eceff5 75%);
+      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
       background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
+      animation: shimmer 1.5s infinite;
       border-radius: 12px;
+      border: 1px solid var(--border);
     }
 
     @keyframes shimmer {
@@ -216,43 +414,54 @@
     }
 
     .skeleton__profile {
-      height: 200px;
-      margin-bottom: 40px;
-      border-radius: 16px;
+      height: 220px;
+      margin-bottom: 56px;
+      border-radius: 28px;
     }
 
     .skeleton__row {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
       margin-bottom: 40px;
     }
 
-    .skeleton__card { height: 300px; }
+    .skeleton__card { height: 340px; border-radius: var(--radius); }
 
-    /* ---------- Заглушка при ошибке ---------- */
+    /* ---------- Заглушка ---------- */
     .error {
       max-width: 520px;
-      margin: 60px auto;
-      background: #fff;
-      border-radius: 20px;
-      padding: 48px 32px;
+      margin: 80px auto;
+      background: linear-gradient(160deg, rgba(30, 36, 66, 0.95), rgba(22, 26, 46, 0.95));
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 56px 36px;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-      animation: fadeIn 0.4s ease;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .error::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-2), var(--accent), transparent);
+      border-radius: 28px 28px 0 0;
     }
 
     .error__icon {
-      font-size: 64px;
+      font-size: 72px;
       line-height: 1;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       display: inline-block;
       animation: wobble 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 8px 24px rgba(176, 108, 255, 0.4));
     }
 
     @keyframes wobble {
@@ -262,50 +471,64 @@
     }
 
     .error__title {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      margin-bottom: 10px;
-      color: #1f2937;
+      margin-bottom: 12px;
+      color: #f0f2ff;
+      letter-spacing: -0.01em;
     }
 
     .error__text {
-      color: #6b7280;
+      color: var(--text-dim);
       font-size: 15px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      line-height: 1.6;
     }
 
     .error__btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #6366f1;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #fff;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
       font-family: inherit;
+      box-shadow: 0 10px 30px rgba(124, 140, 255, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .error__btn:hover {
-      background: #4f46e5;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(124, 140, 255, 0.5);
     }
 
-    .error__btn:active { transform: translateY(0); }
+    .error__btn:active { transform: translateY(-1px); }
 
     /* ---------- Адаптив ---------- */
-    @media (max-width: 640px) {
+    @media (max-width: 720px) {
+      body { padding: 24px 14px 60px; }
+
       .profile {
         flex-direction: column;
         text-align: center;
-        padding: 24px;
+        padding: 32px 22px;
+        gap: 28px;
       }
+      .profile__info { text-align: center; }
+      .profile__about { max-width: 100%; }
       .profile__contacts { justify-content: center; }
       .skills { justify-content: center; }
+
+      .profile__avatar { width: 120px; height: 120px; }
+
+      .projects { grid-template-columns: 1fr; }
+
+      .card__image-wrap { height: 170px; }
     }
   </style>
 </head>
@@ -339,7 +562,9 @@
         .join('');
 
       return `
-        <img class="profile__avatar" src="${escapeHtml(p.avatar)}" alt="${escapeHtml(p.name)}" />
+        <div class="profile__avatar-wrap">
+          <img class="profile__avatar" src="${escapeHtml(p.avatar)}" alt="${escapeHtml(p.name)}" />
+        </div>
         <div class="profile__info">
           <h1 class="profile__name">${escapeHtml(p.name)}</h1>
           <div class="profile__position">${escapeHtml(p.position)}</div>
@@ -358,13 +583,15 @@
 
       return `
         <article class="card">
-          <img class="card__image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" />
+          <div class="card__image-wrap">
+            <img class="card__image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" />
+          </div>
           <div class="card__body">
             <h3 class="card__title">${escapeHtml(item.title)}</h3>
             <p class="card__description">${escapeHtml(item.description)}</p>
             <div class="card__tags">${tags}</div>
             <a class="card__link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener">
-              Посмотреть →
+              Посмотреть <span>→</span>
             </a>
           </div>
         </article>
@@ -419,7 +646,7 @@
       renderSkeleton();
 
       try {
-        const res = await fetch('data.json');
+        const res = await fetch('./data.json');
         if (!res.ok) throw new Error('fetch failed');
 
         let data;
@@ -433,7 +660,6 @@
           throw new Error('invalid structure');
         }
 
-        // Восстанавливаем контейнер (был заменён скелетоном)
         document.body.innerHTML = `
           <div class="container">
             <section id="profile" class="profile"></section>
