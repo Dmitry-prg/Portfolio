@@ -34,7 +34,7 @@
           "description": "Игра, в которой нужно угадать слово за ограниченное количество ходов",
           "image": "https://picsum.photos/seed/shop/600/400",
           "tags": ["HTML", "JavaScript"],
-          "link": "https://dmitry-prg.github.io/Minesweeper_Game/"
+          "link": "https://dmitry-prg.github.io/WordleGame/"
         }
       ]
     },
