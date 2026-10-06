@@ -1,0 +1,32 @@
+{
+  "name": "Портфолио",
+  "short_name": "Портфолио",
+  "description": "Личное портфолио с проектами",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1220",
+  "theme_color": "#0f1220",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "./a.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "./a.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "./a.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}

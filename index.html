@@ -2,14 +2,21 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1220" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Портфолио" />
   <title>Портфолио</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/jpeg" href="./a.jpeg" />
+  <link rel="apple-touch-icon" href="./a.jpeg" />
+
   <style>
     :root {
       --bg: #0f1220;
       --bg-soft: #161a2e;
       --card: #1a1f38;
-      --card-hover: #212747;
       --border: rgba(255, 255, 255, 0.08);
       --text: #e8ecff;
       --text-dim: #9aa3c7;
@@ -18,10 +25,11 @@
       --accent-3: #4ad8d8;
       --radius: 20px;
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      --topbar-h: 64px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -30,58 +38,191 @@
       color: var(--text);
       line-height: 1.65;
       min-height: 100vh;
-      padding: 48px 20px 80px;
+      padding: 96px 20px 80px;
       position: relative;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Мягкие цветные пятна на фоне */
-    body::before,
-    body::after {
+    body::before, body::after {
       content: "";
       position: fixed;
-      width: 600px;
-      height: 600px;
+      width: 600px; height: 600px;
       border-radius: 50%;
       filter: blur(140px);
       opacity: 0.35;
       pointer-events: none;
       z-index: 0;
     }
-
     body::before {
       background: radial-gradient(circle, var(--accent), transparent 70%);
-      top: -200px;
-      left: -200px;
+      top: -200px; left: -200px;
       animation: float1 18s ease-in-out infinite;
     }
-
     body::after {
       background: radial-gradient(circle, var(--accent-2), transparent 70%);
-      bottom: -250px;
-      right: -200px;
+      bottom: -250px; right: -200px;
       animation: float2 22s ease-in-out infinite;
     }
+    @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(80px,60px); } }
+    @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-70px,-50px); } }
 
-    @keyframes float1 {
-      0%, 100% { transform: translate(0, 0); }
-      50%      { transform: translate(80px, 60px); }
+    .container { max-width: 1040px; margin: 0 auto; position: relative; z-index: 1; }
+
+    /* ================= TOPBAR ================= */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--topbar-h);
+      z-index: 100;
+      background: rgba(15, 18, 32, 0);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+      pointer-events: none;
     }
 
-    @keyframes float2 {
-      0%, 100% { transform: translate(0, 0); }
-      50%      { transform: translate(-70px, -50px); }
+    .topbar--visible {
+      background: rgba(15, 18, 32, 0.72);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-bottom-color: var(--border);
+      pointer-events: auto;
     }
 
-    .container {
+    .topbar__inner {
       max-width: 1040px;
+      height: 100%;
       margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    /* ---------- Профиль ---------- */
+    .topbar__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s var(--ease), transform 0.5s var(--ease);
+    }
+    .topbar--visible .topbar__left { opacity: 1; transform: translateY(0); }
+
+    .topbar__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--card);
+      border: 2px solid transparent;
+      background-image:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(135deg, var(--accent), var(--accent-2)) border-box;
+      box-shadow: 0 4px 16px rgba(124, 140, 255, 0.35);
+      transform: scale(0.6);
+      transition: transform 0.55s var(--ease);
+    }
+    .topbar--visible .topbar__avatar { transform: scale(1); }
+
+    .topbar__name {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    .topbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s var(--ease) 0.06s, transform 0.5s var(--ease) 0.06s;
+    }
+    .topbar--visible .topbar__actions { opacity: 1; transform: translateY(0); }
+
+    .topbar__btn {
+      width: 40px; height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .topbar__btn:hover {
+      color: var(--text);
+      background: rgba(124, 140, 255, 0.16);
+      border-color: rgba(124, 140, 255, 0.5);
+      transform: translateY(-2px);
+    }
+    .topbar__btn svg { width: 20px; height: 20px; }
+
+    .dropdown-wrap { position: relative; }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 260px;
+      background: linear-gradient(160deg, rgba(30, 36, 66, 0.98), rgba(22, 26, 46, 0.98));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+      transform-origin: top right;
+      pointer-events: none;
+      transition: opacity 0.25s var(--ease), transform 0.3s var(--ease);
+      z-index: 101;
+    }
+    .dropdown--open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .dropdown__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .dropdown__item:hover {
+      background: rgba(124, 140, 255, 0.14);
+      color: var(--text);
+    }
+    .dropdown__item svg {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    /* ================= ПРОФИЛЬ ================= */
     .profile {
       background: linear-gradient(145deg, rgba(30, 36, 66, 0.9), rgba(22, 26, 46, 0.85));
       backdrop-filter: blur(20px);
@@ -96,33 +237,25 @@
       margin-bottom: 56px;
       position: relative;
       overflow: hidden;
-      animation: riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: riseIn 0.7s var(--ease);
     }
-
     .profile::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
       opacity: 0.8;
     }
-
     @keyframes riseIn {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .profile__avatar-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
+    .profile__avatar-wrap { position: relative; flex-shrink: 0; }
 
     .profile__avatar {
-      width: 150px;
-      height: 150px;
+      width: 150px; height: 150px;
       border-radius: 50%;
       object-fit: cover;
       display: block;
@@ -145,10 +278,9 @@
       z-index: 0;
       animation: pulse 3.5s ease-in-out infinite;
     }
-
     @keyframes pulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50%      { opacity: 0.65; transform: scale(1.06); }
+      0%,100% { opacity: 0.4; transform: scale(1); }
+      50%     { opacity: 0.65; transform: scale(1.06); }
     }
 
     .profile__info { flex: 1; min-width: 0; }
@@ -190,34 +322,33 @@
       gap: 10px;
       margin-bottom: 22px;
     }
-
     .profile__contacts a {
       color: var(--text-dim);
       text-decoration: none;
       font-size: 13.5px;
-      padding: 7px 14px;
+      font-weight: 500;
+      padding: 7px 14px 7px 11px;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
-
     .profile__contacts a:hover {
       color: var(--text);
       background: rgba(124, 140, 255, 0.14);
       border-color: rgba(124, 140, 255, 0.5);
       transform: translateY(-2px);
     }
-
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .profile__contacts svg {
+      width: 16px; height: 16px;
+      color: var(--accent);
+      flex-shrink: 0;
     }
 
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; }
     .skills span {
       font-size: 12.5px;
       font-weight: 600;
@@ -228,19 +359,17 @@
       border: 1px solid rgba(124, 140, 255, 0.22);
       transition: all 0.25s ease;
     }
-
     .skills span:hover {
       background: rgba(124, 140, 255, 0.22);
       color: #e2e6ff;
       transform: translateY(-2px);
     }
 
-    /* ---------- Блоки проектов ---------- */
+    /* ================= ПРОЕКТЫ ================= */
     .block {
       margin-bottom: 52px;
-      animation: riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: riseIn 0.7s var(--ease) both;
     }
-
     .block:nth-of-type(2) { animation-delay: 0.08s; }
     .block:nth-of-type(3) { animation-delay: 0.16s; }
     .block:nth-of-type(4) { animation-delay: 0.24s; }
@@ -255,11 +384,9 @@
       gap: 14px;
       color: #eef1ff;
     }
-
     .block__title::before {
       content: "";
-      width: 4px;
-      height: 26px;
+      width: 4px; height: 26px;
       border-radius: 4px;
       background: linear-gradient(180deg, var(--accent), var(--accent-2));
       box-shadow: 0 0 20px rgba(124, 140, 255, 0.6);
@@ -277,14 +404,11 @@
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.4s ease,
-                  border-color 0.3s ease;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s ease, border-color 0.3s ease;
       display: flex;
       flex-direction: column;
       position: relative;
     }
-
     .card::after {
       content: "";
       position: absolute;
@@ -292,21 +416,17 @@
       border-radius: var(--radius);
       padding: 1px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
               mask-composite: exclude;
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
     }
-
     .card:hover {
       transform: translateY(-8px);
       box-shadow: 0 24px 60px rgba(124, 140, 255, 0.22);
     }
-
     .card:hover::after { opacity: 1; }
 
     .card__image-wrap {
@@ -315,17 +435,13 @@
       background: var(--bg-soft);
       position: relative;
     }
-
     .card__image {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.6s var(--ease);
     }
-
     .card:hover .card__image { transform: scale(1.08); }
-
     .card__image-wrap::after {
       content: "";
       position: absolute;
@@ -342,7 +458,6 @@
       position: relative;
       z-index: 1;
     }
-
     .card__title {
       font-size: 17.5px;
       font-weight: 700;
@@ -350,21 +465,13 @@
       letter-spacing: -0.01em;
       color: #f0f2ff;
     }
-
     .card__description {
       color: var(--text-dim);
       font-size: 14px;
       flex: 1;
       margin-bottom: 16px;
     }
-
-    .card__tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 18px;
-    }
-
+    .card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
     .card__tags span {
       font-size: 11.5px;
       font-weight: 600;
@@ -374,7 +481,6 @@
       color: #c9b6ff;
       border: 1px solid rgba(176, 108, 255, 0.22);
     }
-
     .card__link {
       align-self: flex-start;
       color: var(--accent);
@@ -386,20 +492,15 @@
       gap: 6px;
       transition: gap 0.25s ease, color 0.25s ease;
     }
+    .card__link:hover { color: var(--accent-2); gap: 12px; }
 
-    .card__link:hover {
-      color: var(--accent-2);
-      gap: 12px;
-    }
-
-    /* ---------- Скелетон ---------- */
+    /* ================= СКЕЛЕТОН ================= */
     .skeleton {
       max-width: 1040px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
     }
-
     .skeleton__box {
       background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
       background-size: 200% 100%;
@@ -407,28 +508,20 @@
       border-radius: 12px;
       border: 1px solid var(--border);
     }
-
     @keyframes shimmer {
       0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-
-    .skeleton__profile {
-      height: 220px;
-      margin-bottom: 56px;
-      border-radius: 28px;
-    }
-
+    .skeleton__profile { height: 220px; margin-bottom: 56px; border-radius: 28px; }
     .skeleton__row {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
       margin-bottom: 40px;
     }
-
     .skeleton__card { height: 340px; border-radius: var(--radius); }
 
-    /* ---------- Заглушка ---------- */
+    /* ================= ЗАГЛУШКА ================= */
     .error {
       max-width: 520px;
       margin: 80px auto;
@@ -441,20 +534,16 @@
       box-shadow: var(--shadow);
       position: relative;
       z-index: 1;
-      animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: riseIn 0.6s var(--ease);
     }
-
     .error::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent-2), var(--accent), transparent);
       border-radius: 28px 28px 0 0;
     }
-
     .error__icon {
       font-size: 72px;
       line-height: 1;
@@ -463,28 +552,17 @@
       animation: wobble 2.5s ease-in-out infinite;
       filter: drop-shadow(0 8px 24px rgba(176, 108, 255, 0.4));
     }
-
     @keyframes wobble {
-      0%, 100% { transform: rotate(0); }
-      25%      { transform: rotate(-8deg); }
-      75%      { transform: rotate(8deg); }
+      0%,100% { transform: rotate(0); }
+      25%     { transform: rotate(-8deg); }
+      75%     { transform: rotate(8deg); }
     }
-
     .error__title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #f0f2ff;
+      font-size: 24px; font-weight: 700;
+      margin-bottom: 12px; color: #f0f2ff;
       letter-spacing: -0.01em;
     }
-
-    .error__text {
-      color: var(--text-dim);
-      font-size: 15px;
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-
+    .error__text { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
     .error__btn {
       display: inline-flex;
       align-items: center;
@@ -501,17 +579,43 @@
       box-shadow: 0 10px 30px rgba(124, 140, 255, 0.35);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
+    .error__btn:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(124, 140, 255, 0.5); }
 
-    .error__btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(124, 140, 255, 0.5);
+    /* ================= TOAST ================= */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translate(-50%, 100px);
+      background: linear-gradient(135deg, rgba(30, 36, 66, 0.98), rgba(22, 26, 46, 0.98));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 22px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.45s var(--ease);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+    .toast--show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    .toast svg { width: 18px; height: 18px; color: var(--accent-3); }
 
-    .error__btn:active { transform: translateY(-1px); }
-
-    /* ---------- Адаптив ---------- */
+    /* ================= АДАПТИВ ================= */
     @media (max-width: 720px) {
-      body { padding: 24px 14px 60px; }
+      body { padding: 84px 14px 60px; }
+      .topbar__inner { padding: 0 14px; }
+      .topbar__name { max-width: 140px; }
 
       .profile {
         flex-direction: column;
@@ -523,24 +627,91 @@
       .profile__about { max-width: 100%; }
       .profile__contacts { justify-content: center; }
       .skills { justify-content: center; }
-
       .profile__avatar { width: 120px; height: 120px; }
 
       .projects { grid-template-columns: 1fr; }
-
       .card__image-wrap { height: 170px; }
+
+      .dropdown { min-width: 220px; right: -8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- ===== Шапка ===== -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <div class="topbar__left" id="topbarLeft">
+        <img class="topbar__avatar" id="topbarAvatar" alt="" />
+        <span class="topbar__name" id="topbarName"></span>
+      </div>
+      <div class="topbar__actions">
+        <div class="dropdown-wrap">
+          <button class="topbar__btn" id="contactsBtn" aria-label="Контакты">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </button>
+          <div class="dropdown" id="contactsDropdown"></div>
+        </div>
+        <button class="topbar__btn" id="shareBtn" aria-label="Поделиться">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Контент ===== -->
   <div class="container">
     <section id="profile" class="profile"></section>
     <div id="projects"></div>
   </div>
 
+  <!-- ===== Toast ===== -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span id="toastText">Готово</span>
+  </div>
+
   <script>
-    // ---------- Утилиты ----------
+    // ================= ИКОНКИ КОНТАКТОВ =================
+    const CONTACT_ICONS = {
+      email: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 6l-10 7L2 6"/></svg>`,
+      phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+      telegram: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.94 2.03c-5.5.03-9.96 4.5-9.96 10 0 5.5 4.48 9.98 9.98 9.97 5.5-.01 9.96-4.48 9.96-10 .01-5.49-4.46-9.97-9.98-9.97zm4.65 6.83l-1.55 7.3c-.11.52-.43.65-.86.4l-2.37-1.75-1.15 1.1c-.13.13-.23.24-.48.24l.17-2.43 4.42-3.99c.19-.17-.04-.26-.3-.1l-5.46 3.44-2.35-.73c-.51-.16-.52-.51.1-.76l9.18-3.53c.42-.15.8.1.65.81z"/></svg>`,
+      github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-1.93c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55C20.22 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>`,
+      linkedin: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43c-1.14 0-2.07-.93-2.07-2.07 0-1.14.93-2.07 2.07-2.07 1.14 0 2.07.93 2.07 2.07 0 1.14-.93 2.07-2.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>`,
+      twitter: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+      whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`,
+      vk: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.162 18.994c.609 0 .858-.406.851-.915-.031-1.917.714-2.949 2.059-1.604 1.488 1.488 1.796 2.519 3.603 2.519h3.2c.808 0 1.126-.26 1.126-.668 0-.863-1.421-2.386-2.625-3.504-1.686-1.565-1.765-1.602-.313-3.486 1.801-2.339 4.157-5.336 2.073-5.336h-3.981c-.772 0-.828.435-1.103 1.083-.995 2.347-2.886 5.387-3.604 4.922-.751-.485-.407-2.406-.35-5.261.015-.754.011-1.271-1.141-1.539-.629-.145-1.241-.205-1.809-.205-2.273 0-3.841.953-2.95 1.119 1.571.293 1.42 3.692 1.054 5.16-.638 2.556-3.036-2.024-4.035-4.305-.241-.548-.315-.974-1.175-.974H.721c-.786 0-1.279.386-1.279 1.017 0 .933 1.286 5.297 5.459 10.436 2.753 3.531 6.662 5.617 10.217 5.617h2.5"/></svg>`,
+      site: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      default: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`
+    };
+
+    function contactIcon(type) {
+      const key = (type || '').toLowerCase();
+      return CONTACT_ICONS[key] || CONTACT_ICONS.default;
+    }
+
+    // ================= УТИЛИТЫ =================
     function escapeHtml(str) {
       if (str == null) return '';
       return String(str)
@@ -551,10 +722,13 @@
         .replace(/'/g, '&#39;');
     }
 
-    // ---------- Рендер профиля ----------
+    // ================= РЕНДЕР =================
     function renderProfile(p) {
       const contacts = (p.contacts || []).map(c =>
-        `<a href="${escapeHtml(c.url)}" target="_blank" rel="noopener">${escapeHtml(c.label)}</a>`
+        `<a href="${escapeHtml(c.url)}" target="_blank" rel="noopener">
+          ${contactIcon(c.type)}
+          <span>${escapeHtml(c.label)}</span>
+        </a>`
       ).join('');
 
       const skills = (p.skills || [])
@@ -575,7 +749,6 @@
       `;
     }
 
-    // ---------- Рендер карточки проекта ----------
     function renderProjectCard(item) {
       const tags = (item.tags || [])
         .map(t => `<span>${escapeHtml(t)}</span>`)
@@ -598,7 +771,6 @@
       `;
     }
 
-    // ---------- Рендер блоков проектов ----------
     function renderProjects(blocks) {
       return blocks.map(block => `
         <section class="block">
@@ -610,10 +782,9 @@
       `).join('');
     }
 
-    // ---------- Скелетон загрузки ----------
     function renderSkeleton() {
-      document.body.innerHTML = `
-        <div class="skeleton">
+      document.body.insertAdjacentHTML('beforeend', `
+        <div class="skeleton" id="skeleton">
           <div class="skeleton__box skeleton__profile"></div>
           <div class="skeleton__row">
             <div class="skeleton__box skeleton__card"></div>
@@ -621,29 +792,114 @@
             <div class="skeleton__box skeleton__card"></div>
           </div>
         </div>
-      `;
+      `);
     }
 
-    // ---------- Заглушка при ошибке ----------
     function renderError() {
-      document.body.innerHTML = `
+      const container = document.querySelector('.container');
+      if (container) container.innerHTML = `
         <div class="error">
           <div class="error__icon">📭</div>
           <h2 class="error__title">Не удалось загрузить информацию</h2>
-          <p class="error__text">
-            Что-то пошло не так. Попробуйте обновить страницу<br>
-            или загляните позже.
-          </p>
-          <button class="error__btn" onclick="location.reload()">
-            🔄 Попробовать снова
-          </button>
+          <p class="error__text">Что-то пошло не так. Попробуйте обновить страницу<br>или загляните позже.</p>
+          <button class="error__btn" onclick="location.reload()">🔄 Попробовать снова</button>
         </div>
       `;
     }
 
-    // ---------- Инициализация ----------
+    // ================= TOPBAR =================
+    function setupTopbar(profile) {
+      document.getElementById('topbarAvatar').src = profile.avatar || '';
+      document.getElementById('topbarName').textContent = profile.name || '';
+
+      const dd = document.getElementById('contactsDropdown');
+      dd.innerHTML = (profile.contacts || []).map(c => `
+        <a class="dropdown__item" href="${escapeHtml(c.url)}" target="_blank" rel="noopener">
+          ${contactIcon(c.type)}
+          <span>${escapeHtml(c.label)}</span>
+        </a>
+      `).join('');
+
+      document.getElementById('topbarLeft').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      const contactsBtn = document.getElementById('contactsBtn');
+      contactsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dd.classList.toggle('dropdown--open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!dd.contains(e.target) && e.target !== contactsBtn) {
+          dd.classList.remove('dropdown--open');
+        }
+      });
+    }
+
+    function setupScrollWatcher() {
+      const topbar = document.getElementById('topbar');
+      const profile = document.querySelector('.profile');
+      let visible = false;
+
+      function check() {
+        if (!profile) return;
+        const shouldShow = profile.getBoundingClientRect().bottom < 90;
+        if (shouldShow !== visible) {
+          visible = shouldShow;
+          topbar.classList.toggle('topbar--visible', visible);
+          if (!visible) {
+            document.getElementById('contactsDropdown').classList.remove('dropdown--open');
+          }
+        }
+      }
+
+      window.addEventListener('scroll', check, { passive: true });
+      window.addEventListener('resize', check, { passive: true });
+      check();
+    }
+
+    // ================= SHARE =================
+    function setupShare(profile) {
+      document.getElementById('shareBtn').addEventListener('click', async () => {
+        const shareData = {
+          title: document.title,
+          text: profile.name ? `Портфолио — ${profile.name}` : 'Портфолио',
+          url: location.href
+        };
+        try {
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else if (navigator.clipboard) {
+            await navigator.clipboard.writeText(location.href);
+            showToast('Ссылка скопирована');
+          } else {
+            showToast('Скопируйте ссылку из адресной строки');
+          }
+        } catch (e) {}
+      });
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').textContent = text;
+      toast.classList.add('toast--show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove('toast--show'), 2200);
+    }
+
+    // ================= PWA =================
+    function registerSW() {
+      if (!('serviceWorker' in navigator)) return;
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // ================= INIT =================
     async function init() {
       renderSkeleton();
+      registerSW();
 
       try {
         const res = await fetch('./data.json');
@@ -660,17 +916,19 @@
           throw new Error('invalid structure');
         }
 
-        document.body.innerHTML = `
-          <div class="container">
-            <section id="profile" class="profile"></section>
-            <div id="projects"></div>
-          </div>
-        `;
+        const sk = document.getElementById('skeleton');
+        if (sk) sk.remove();
 
         document.getElementById('profile').innerHTML = renderProfile(data.profile);
         document.getElementById('projects').innerHTML = renderProjects(data.projects);
+
+        setupTopbar(data.profile);
+        setupShare(data.profile);
+        setupScrollWatcher();
       } catch (err) {
         console.error('Ошибка загрузки данных:', err);
+        const sk = document.getElementById('skeleton');
+        if (sk) sk.remove();
         renderError();
       }
     }
