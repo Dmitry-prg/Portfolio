@@ -44,28 +44,25 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ===== Фоновые пятна — статичные ===== */
     body::before, body::after {
       content: "";
       position: fixed;
-      width: 600px; height: 600px;
+      width: 500px; height: 500px;
       border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.35;
+      filter: blur(110px);
+      opacity: 0.3;
       pointer-events: none;
       z-index: 0;
     }
     body::before {
       background: radial-gradient(circle, var(--accent), transparent 70%);
-      top: -200px; left: -200px;
-      animation: float1 18s ease-in-out infinite;
+      top: -180px; left: -180px;
     }
     body::after {
       background: radial-gradient(circle, var(--accent-2), transparent 70%);
-      bottom: -250px; right: -200px;
-      animation: float2 22s ease-in-out infinite;
+      bottom: -220px; right: -180px;
     }
-    @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(80px,60px); } }
-    @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-70px,-50px); } }
 
     .container { max-width: 1040px; margin: 0 auto; position: relative; z-index: 1; }
 
@@ -84,9 +81,9 @@
     }
 
     .topbar--visible {
-      background: rgba(15, 18, 32, 0.72);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      background: rgba(15, 18, 32, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom-color: var(--border);
       pointer-events: auto;
     }
@@ -111,6 +108,7 @@
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 0.45s var(--ease), transform 0.5s var(--ease);
+      will-change: transform, opacity;
     }
     .topbar--visible .topbar__left { opacity: 1; transform: translateY(0); }
 
@@ -125,10 +123,11 @@
         linear-gradient(var(--card), var(--card)) padding-box,
         linear-gradient(135deg, var(--accent), var(--accent-2)) border-box;
       box-shadow: 0 4px 16px rgba(124, 140, 255, 0.35);
-      transform: scale(0.6);
+      transform: scale(0.6) translateZ(0);
       transition: transform 0.55s var(--ease);
+      will-change: transform;
     }
-    .topbar--visible .topbar__avatar { transform: scale(1); }
+    .topbar--visible .topbar__avatar { transform: scale(1) translateZ(0); }
 
     .topbar__name {
       font-weight: 700;
@@ -148,6 +147,7 @@
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 0.45s var(--ease) 0.06s, transform 0.5s var(--ease) 0.06s;
+      will-change: transform, opacity;
     }
     .topbar--visible .topbar__actions { opacity: 1; transform: translateY(0); }
 
@@ -161,14 +161,13 @@
       border: 1px solid var(--border);
       color: var(--text-dim);
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
       position: relative;
     }
     .topbar__btn:hover {
       color: var(--text);
       background: rgba(124, 140, 255, 0.16);
       border-color: rgba(124, 140, 255, 0.5);
-      transform: translateY(-2px);
     }
     .topbar__btn svg { width: 20px; height: 20px; }
 
@@ -184,8 +183,6 @@
       border-radius: 14px;
       padding: 8px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       opacity: 0;
       transform: translateY(-8px) scale(0.96);
       transform-origin: top right;
@@ -209,7 +206,7 @@
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
       white-space: nowrap;
     }
     .dropdown__item:hover {
@@ -225,8 +222,6 @@
     /* ================= ПРОФИЛЬ ================= */
     .profile {
       background: linear-gradient(145deg, rgba(30, 36, 66, 0.9), rgba(22, 26, 46, 0.85));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border);
       border-radius: 28px;
       padding: 44px;
@@ -238,6 +233,7 @@
       position: relative;
       overflow: hidden;
       animation: riseIn 0.7s var(--ease);
+      transform: translateZ(0);
     }
     .profile::before {
       content: "";
@@ -270,17 +266,11 @@
     .profile__avatar-wrap::after {
       content: "";
       position: absolute;
-      inset: -12px;
+      inset: -10px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      filter: blur(24px);
-      opacity: 0.5;
+      background: radial-gradient(circle, rgba(124, 140, 255, 0.5), transparent 70%);
       z-index: 0;
-      animation: pulse 3.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 0.4; transform: scale(1); }
-      50%     { opacity: 0.65; transform: scale(1.06); }
+      pointer-events: none;
     }
 
     .profile__info { flex: 1; min-width: 0; }
@@ -331,7 +321,7 @@
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
-      transition: all 0.25s ease;
+      transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -340,7 +330,6 @@
       color: var(--text);
       background: rgba(124, 140, 255, 0.14);
       border-color: rgba(124, 140, 255, 0.5);
-      transform: translateY(-2px);
     }
     .profile__contacts svg {
       width: 16px; height: 16px;
@@ -357,12 +346,6 @@
       color: #b9c2ff;
       background: rgba(124, 140, 255, 0.1);
       border: 1px solid rgba(124, 140, 255, 0.22);
-      transition: all 0.25s ease;
-    }
-    .skills span:hover {
-      background: rgba(124, 140, 255, 0.22);
-      color: #e2e6ff;
-      transform: translateY(-2px);
     }
 
     /* ================= ПРОЕКТЫ ================= */
@@ -408,6 +391,8 @@
       display: flex;
       flex-direction: column;
       position: relative;
+      transform: translateZ(0);
+      cursor: pointer;
     }
     .card::after {
       content: "";
@@ -424,10 +409,18 @@
       pointer-events: none;
     }
     .card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-6px) translateZ(0);
       box-shadow: 0 24px 60px rgba(124, 140, 255, 0.22);
     }
     .card:hover::after { opacity: 1; }
+    .card:active {
+      transform: translateY(-2px) scale(0.99) translateZ(0);
+      transition: transform 0.1s ease;
+    }
+    .card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
 
     .card__image-wrap {
       overflow: hidden;
@@ -441,7 +434,7 @@
       display: block;
       transition: transform 0.6s var(--ease);
     }
-    .card:hover .card__image { transform: scale(1.08); }
+    .card:hover .card__image { transform: scale(1.06); }
     .card__image-wrap::after {
       content: "";
       position: absolute;
@@ -491,8 +484,12 @@
       align-items: center;
       gap: 6px;
       transition: gap 0.25s ease, color 0.25s ease;
+      pointer-events: none;
     }
-    .card__link:hover { color: var(--accent-2); gap: 12px; }
+    .card:hover .card__link {
+      color: var(--accent-2);
+      gap: 12px;
+    }
 
     /* ================= СКЕЛЕТОН ================= */
     .skeleton {
@@ -502,15 +499,14 @@
       z-index: 1;
     }
     .skeleton__box {
-      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border);
+      border-radius: 12px;
+      animation: skeleton-pulse 1.8s ease-in-out infinite;
     }
-    @keyframes shimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+    @keyframes skeleton-pulse {
+      0%, 100% { opacity: 0.6; }
+      50%      { opacity: 1; }
     }
     .skeleton__profile { height: 220px; margin-bottom: 56px; border-radius: 28px; }
     .skeleton__row {
@@ -526,7 +522,6 @@
       max-width: 520px;
       margin: 80px auto;
       background: linear-gradient(160deg, rgba(30, 36, 66, 0.95), rgba(22, 26, 46, 0.95));
-      backdrop-filter: blur(20px);
       border: 1px solid var(--border);
       border-radius: 28px;
       padding: 56px 36px;
@@ -549,13 +544,7 @@
       line-height: 1;
       margin-bottom: 24px;
       display: inline-block;
-      animation: wobble 2.5s ease-in-out infinite;
       filter: drop-shadow(0 8px 24px rgba(176, 108, 255, 0.4));
-    }
-    @keyframes wobble {
-      0%,100% { transform: rotate(0); }
-      25%     { transform: rotate(-8deg); }
-      75%     { transform: rotate(8deg); }
     }
     .error__title {
       font-size: 24px; font-weight: 700;
@@ -595,8 +584,6 @@
       font-size: 14px;
       font-weight: 600;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       z-index: 200;
       opacity: 0;
       pointer-events: none;
@@ -638,7 +625,9 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -754,8 +743,10 @@
         .map(t => `<span>${escapeHtml(t)}</span>`)
         .join('');
 
+      const link = escapeHtml(item.link || '');
+
       return `
-        <article class="card">
+        <article class="card" data-link="${link}" tabindex="0" role="link" aria-label="${escapeHtml(item.title)}">
           <div class="card__image-wrap">
             <img class="card__image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" />
           </div>
@@ -763,7 +754,7 @@
             <h3 class="card__title">${escapeHtml(item.title)}</h3>
             <p class="card__description">${escapeHtml(item.description)}</p>
             <div class="card__tags">${tags}</div>
-            <a class="card__link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener">
+            <a class="card__link" href="${link}" target="_blank" rel="noopener">
               Посмотреть <span>→</span>
             </a>
           </div>
@@ -841,9 +832,10 @@
       const topbar = document.getElementById('topbar');
       const profile = document.querySelector('.profile');
       let visible = false;
+      let ticking = false;
 
       function check() {
-        if (!profile) return;
+        if (!profile) { ticking = false; return; }
         const shouldShow = profile.getBoundingClientRect().bottom < 90;
         if (shouldShow !== visible) {
           visible = shouldShow;
@@ -852,11 +844,43 @@
             document.getElementById('contactsDropdown').classList.remove('dropdown--open');
           }
         }
+        ticking = false;
       }
 
-      window.addEventListener('scroll', check, { passive: true });
-      window.addEventListener('resize', check, { passive: true });
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(check);
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
       check();
+    }
+
+    // ================= КЛИК ПО КАРТОЧКЕ =================
+    function setupCardLinks() {
+      const grid = document.getElementById('projects');
+      if (!grid) return;
+
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.card');
+        if (!card) return;
+        const url = card.dataset.link;
+        if (!url) return;
+        window.open(url, '_blank', 'noopener');
+      });
+
+      grid.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.card');
+        if (!card) return;
+        const url = card.dataset.link;
+        if (!url) return;
+        e.preventDefault();
+        window.open(url, '_blank', 'noopener');
+      });
     }
 
     // ================= SHARE =================
@@ -925,6 +949,7 @@
         setupTopbar(data.profile);
         setupShare(data.profile);
         setupScrollWatcher();
+        setupCardLinks();
       } catch (err) {
         console.error('Ошибка загрузки данных:', err);
         const sk = document.getElementById('skeleton');
